@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <EditText
+        android:id="@+id/Pincode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:hint="Type your Pincode">
+
+    </EditText>
+    <EditText
+        android:id="@+id/date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:hint="Choose Vaccination Date">
+
+    </EditText>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose Preffered Vaccine :-"
+        android:textColor="@color/black"
+        android:layout_marginStart="8dp">
+
+    </TextView>
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/covaxin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="COVAXIN">
+
+        </RadioButton>
+        <RadioButton
+            android:id="@+id/covidSheild"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="COVISHIELD"
+            android:layout_marginEnd="8dp">
+        </RadioButton>
+        <RadioButton
+            android:id="@+id/any"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ANY">
+        </RadioButton>
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose Min Age limit :-"
+        android:textColor="@color/black"
+        android:layout_marginStart="8dp">
+
+    </TextView>
+    <RadioGroup
+        android:id="@+id/radio_group2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/age1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="18">
+
+        </RadioButton>
+        <RadioButton
+            android:id="@+id/age2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="45"
+            android:layout_marginEnd="8dp">
+        </RadioButton>
+
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/find"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Set Notification Alert"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="20dp">
+
+    </Button>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Availaible Vaccines list :-"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp">
+
+    </TextView>
+    <ListView
+        android:id="@+id/vaccine_list"
+        android:layout_margin="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </ListView>
+
+</LinearLayout>
