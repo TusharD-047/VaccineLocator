@@ -4,13 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import android.app.DatePickerDialog;
 import android.app.Notification;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -27,7 +30,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 import static com.unlock.vaccinelocator.App.CHANNEL_ID;
 
@@ -36,8 +42,10 @@ public class MainActivity extends AppCompatActivity {
     private Button b;
     private RadioGroup radioGroup1,radioGroup2;
     private EditText date,pincode;
+    private ImageView cal;
     private ListView lv;
     private NotificationManagerCompat notificationManagerCompat;
+    Calendar calendar = Calendar.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,8 +55,22 @@ public class MainActivity extends AppCompatActivity {
         radioGroup2 = findViewById(R.id.radio_group2);
         pincode = findViewById(R.id.Pincode);
         lv = findViewById(R.id.vaccine_list);
+        cal = findViewById(R.id.calender);
         date = findViewById(R.id.date);
         notificationManagerCompat = NotificationManagerCompat.from(this);
+        final DatePickerDialog.OnDateSetListener Datedialog = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                calendar.set(year,month,dayOfMonth);
+                updateLabel();
+            }
+        };
+        cal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(MainActivity.this,Datedialog,calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,7 +81,16 @@ public class MainActivity extends AppCompatActivity {
                 sendApiRequest(pincode.getText().toString(),date.getText().toString(),vaccine.getText().toString(),age.getText().toString(),arrayList);
             }
         });
+
+
     }
+
+    private void updateLabel() {
+        String myFormat = "dd/MM/yyyy";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        date.setText(sdf.format(calendar.getTime()));
+    }
+
 
     private void sendApiRequest(String pincode, String date, String vaccineBrand, String ageText, ArrayList<String> arrayList) {
 
