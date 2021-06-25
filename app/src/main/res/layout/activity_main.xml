@@ -139,12 +139,12 @@
         android:layout_marginTop="16dp">
 
     </TextView>
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/vaccine_list"
         android:layout_margin="8dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </ListView>
+    </androidx.recyclerview.widget.RecyclerView>
 
 </LinearLayout>

@@ -3,6 +3,8 @@ package com.unlock.vaccinelocator;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
 import android.app.Notification;
@@ -25,6 +27,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.unlock.vaccinelocator.Adapters.SlotAdapter;
+import com.unlock.vaccinelocator.Models.Doses;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private RadioGroup radioGroup1,radioGroup2;
     private EditText date,pincode;
     private ImageView cal;
-    private ListView lv;
+    private RecyclerView rv;
     private NotificationManagerCompat notificationManagerCompat;
     Calendar calendar = Calendar.getInstance();
     @Override
@@ -54,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         radioGroup1 = findViewById(R.id.radio_group);
         radioGroup2 = findViewById(R.id.radio_group2);
         pincode = findViewById(R.id.Pincode);
-        lv = findViewById(R.id.vaccine_list);
+        rv = findViewById(R.id.vaccine_list);
         cal = findViewById(R.id.calender);
         date = findViewById(R.id.date);
         notificationManagerCompat = NotificationManagerCompat.from(this);
@@ -74,10 +78,10 @@ public class MainActivity extends AppCompatActivity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<String> arrayList = new ArrayList<String>();
+                ArrayList<Doses> arrayList = new ArrayList<>();
                 RadioButton vaccine = (RadioButton) findViewById(radioGroup1.getCheckedRadioButtonId());
                 RadioButton age = (RadioButton) findViewById(radioGroup2.getCheckedRadioButtonId());
-                vaccine.getText();
+                Log.e("details",pincode.getText().toString()+" " +date.getText().toString()+" "+vaccine.getText().toString()+" "+age.getText().toString());
                 sendApiRequest(pincode.getText().toString(),date.getText().toString(),vaccine.getText().toString(),age.getText().toString(),arrayList);
             }
         });
@@ -92,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void sendApiRequest(String pincode, String date, String vaccineBrand, String ageText, ArrayList<String> arrayList) {
+    private void sendApiRequest(String pincode, String date, String vaccineBrand, String ageText, ArrayList<Doses> arrayList) {
 
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
         StringRequest request = new StringRequest(Request.Method.GET, "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode="+pincode+"&date="+date, new Response.Listener<String>() {
@@ -107,13 +111,15 @@ public class MainActivity extends AppCompatActivity {
 
                         String vaccine = jsonArray.getJSONObject(i).get("vaccine").toString();
                         String dose1 = jsonArray.getJSONObject(i).get("available_capacity_dose1").toString();
+                        String dose2 = jsonArray.getJSONObject(i).get("available_capacity_dose2").toString();
                         String min_age = jsonArray.getJSONObject(i).get("min_age_limit").toString();
                         String CentreName = jsonArray.getJSONObject(i).get("name").toString();
                         String CentreAddr = jsonArray.getJSONObject(i).get("address").toString();
+                        String cost_vac = jsonArray.getJSONObject(i).get("fee").toString();
                         int slotAvail = Integer.parseInt(jsonArray.getJSONObject(i).get("available_capacity").toString());
                         if(min_age.equals(ageText) && vaccine.equals(vaccineBrand) && slotAvail >0 )
                         {
-                            String listItem = "Vaccine Name :- "+vaccineBrand+", Centre Name :- "+CentreName+", Centre Address :- "+CentreAddr+ " No. of slots :- "+slotAvail;
+                            Doses listItem = new Doses(CentreName,CentreAddr,vaccine,dose1,dose2,cost_vac,min_age);
                             arrayList.add(listItem);
                             SendNotif(vaccine,slotAvail,min_age);
                             Log.e("vaccine",vaccine);
@@ -138,10 +144,11 @@ public class MainActivity extends AppCompatActivity {
         queue.add(request);
     }
 
-    private void preparelist(ArrayList<String> arrayList) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,arrayList);
-        lv.setAdapter(adapter);
-
+    private void preparelist(ArrayList<Doses> arrayList) {
+        SlotAdapter slotAdapter = new SlotAdapter(arrayList,this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        rv.setLayoutManager(linearLayoutManager);
+        rv.setAdapter(slotAdapter);
     }
 
     private void SendNotif(String vaccine, int slotAvail, String min_age) {
