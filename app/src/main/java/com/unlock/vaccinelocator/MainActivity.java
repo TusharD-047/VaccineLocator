@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
 import android.app.Notification;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -43,7 +44,7 @@ import static com.unlock.vaccinelocator.App.CHANNEL_ID;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button b;
+    private Button b,b1;
     private RadioGroup radioGroup1,radioGroup2;
     private EditText date,pincode;
     private ImageView cal;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         rv = findViewById(R.id.vaccine_list);
         cal = findViewById(R.id.calender);
         date = findViewById(R.id.date);
+        b1 = findViewById(R.id.searchbyD);
         notificationManagerCompat = NotificationManagerCompat.from(this);
         final DatePickerDialog.OnDateSetListener Datedialog = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -83,6 +85,13 @@ public class MainActivity extends AppCompatActivity {
                 RadioButton age = (RadioButton) findViewById(radioGroup2.getCheckedRadioButtonId());
                 Log.e("details",pincode.getText().toString()+" " +date.getText().toString()+" "+vaccine.getText().toString()+" "+age.getText().toString());
                 sendApiRequest(pincode.getText().toString(),date.getText().toString(),vaccine.getText().toString(),age.getText().toString(),arrayList);
+            }
+        });
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,SearchbyDistrict.class);
+                startActivity(intent);
             }
         });
 
