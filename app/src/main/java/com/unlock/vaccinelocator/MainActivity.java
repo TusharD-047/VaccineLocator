@@ -42,6 +42,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import static com.unlock.vaccinelocator.App.CHANNEL_ID;
@@ -80,15 +81,38 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(MainActivity.this, BackgroundService.class);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startService(intent);
-                }
-                ArrayList<Doses> arrayList = new ArrayList<>();
+
                 RadioButton vaccine = (RadioButton) findViewById(radioGroup1.getCheckedRadioButtonId());
                 RadioButton age = (RadioButton) findViewById(radioGroup2.getCheckedRadioButtonId());
-                Log.e("details",pincode.getText().toString()+" " +date.getText().toString()+" "+vaccine.getText().toString()+" "+age.getText().toString());
-                sendApiRequest(pincode.getText().toString(),date.getText().toString(),vaccine.getText().toString(),age.getText().toString(),arrayList);
+                String mpincode = pincode.getText().toString();
+                String mdate = date.getText().toString();
+                String mvaccine = vaccine.getText().toString();
+                String mage = age.getText().toString();
+                if(!mpincode.equals("") && !mdate.equals("") && !mvaccine.equals("") && !mage.equals(""))
+                {
+                    long Currtime = Calendar.getInstance().getTimeInMillis();
+                    long submittedtime = calendar.getTimeInMillis();
+                    Date submittedDate = calendar.getTime();
+                    long diff = (submittedtime-Currtime)/(60*60*1000);
+                    Date d = Calendar.getInstance().getTime();
+                    Log.e("time","in hour "+Currtime/(60*60*1000));
+                    Log.e("date","date is "+d);
+                    Log.e("subDate","submiited date is "+submittedDate);
+                    Log.e("Diff","submiited time is "+submittedtime/(60*60*1000)+" Difference is "+diff);
+                    Intent intent = new Intent(MainActivity.this, BackgroundService.class);
+                    intent.putExtra("difference",diff);
+                    intent.putExtra("submittedTime",submittedtime);
+                    intent.putExtra("pincode",mpincode);
+                    intent.putExtra("vaccine",mvaccine);
+                    intent.putExtra("age",mage);
+                    intent.putExtra("date",mdate);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        startService(intent);
+                    }
+                    ArrayList<Doses> arrayList = new ArrayList<>();
+                    Log.e("details",pincode.getText().toString()+" " +date.getText().toString()+" "+vaccine.getText().toString()+" "+age.getText().toString());
+//                    sendApiRequest(mpincode,mdate,mvaccine,mage,arrayList);
+                }
             }
         });
         stop.setOnClickListener(new View.OnClickListener() {
