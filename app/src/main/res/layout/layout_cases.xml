@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="4dp"
+    android:elevation="10dp"
+    android:layout_margin="8dp"
+    app:cardBackgroundColor="@color/white">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/arctic"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:padding="2dp"
+            android:id="@+id/stateName"
+            android:text="State Name"
+            android:layout_alignParentStart="true"
+            android:textColor="@color/black"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:fontFamily="@font/arctic"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:id="@+id/date_cases"
+            android:padding="2dp"
+            android:text="Date"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/arctic"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:padding="2dp"
+            android:id="@+id/active_cases"
+            android:text="Active Cases         :"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/stateName"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/arctic"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/stateName"
+            android:padding="2dp"
+            android:id="@+id/active_val"
+            android:text="300 (+14)"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/arctic"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_below="@+id/active_val"
+            android:id="@+id/total_cases"
+            android:layout_alignParentStart="true"
+            android:text="Confirmed Cases   :"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/arctic"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:id="@+id/conf_value"
+            android:layout_below="@+id/active_val"
+            android:layout_alignParentEnd="true"
+            android:text="2,50,000 (+5,365)"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/arctic"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_below="@+id/total_cases"
+            android:id="@+id/recovered_cases"
+            android:layout_alignParentStart="true"
+            android:text="Recovered Cases    :"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/arctic"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:id="@+id/recov_val"
+            android:layout_below="@+id/conf_value"
+            android:layout_alignParentEnd="true"
+            android:text="2,49,000 (+8,365)"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/arctic"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_below="@+id/recovered_cases"
+            android:id="@+id/dec_cases"
+            android:layout_alignParentStart="true"
+            android:text="Deceased  :"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/arctic"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:id="@+id/dec_val"
+            android:layout_below="@+id/recov_val"
+            android:layout_alignParentEnd="true"
+            android:text="700 (+5)"
+            />
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
