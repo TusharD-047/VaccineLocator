@@ -2,18 +2,23 @@ package com.unlock.vaccinelocator.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.icu.text.NumberFormat;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.unlock.vaccinelocator.Models.Doses;
 import com.unlock.vaccinelocator.R;
 
+import java.text.Format;
 import java.util.List;
+import java.util.Locale;
 
 public class SlotAdapter extends RecyclerView.Adapter<SlotAdapter.MyViewHolder> {
 
@@ -33,9 +38,11 @@ public class SlotAdapter extends RecyclerView.Adapter<SlotAdapter.MyViewHolder> 
         return new MyViewHolder(view);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull @org.jetbrains.annotations.NotNull SlotAdapter.MyViewHolder holder, int position) {
+        Format format = NumberFormat.getNumberInstance(new Locale("en","in"));
         holder.t1.setText(list.get(position).getCentre_name());
         holder.t2.setText(list.get(position).getAddress());
         holder.t3.setText("Rs : "+list.get(position).getCost());

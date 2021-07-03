@@ -2,12 +2,15 @@ package com.unlock.vaccinelocator.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.icu.text.NumberFormat;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.unlock.vaccinelocator.Models.CasesState;
@@ -15,7 +18,9 @@ import com.unlock.vaccinelocator.R;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.Format;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class CasesStateAdapter extends RecyclerView.Adapter<CasesStateAdapter.MyViewHolder> {
 
@@ -40,14 +45,16 @@ public class CasesStateAdapter extends RecyclerView.Adapter<CasesStateAdapter.My
         return new MyViewHolder(view);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull @NotNull CasesStateAdapter.MyViewHolder holder, int position) {
+        Format format = NumberFormat.getNumberInstance(new Locale("en","in"));
         holder.t1.setText(abc[position]);
-        holder.t2.setText(arrayList.get(position).getActive()+"");
-        holder.t3.setText(arrayList.get(position).getConf()+" ("+arrayList.get(position).getIncrease_conf()+")");
-        holder.t4.setText(arrayList.get(position).getRecovered()+" ("+arrayList.get(position).getChange_recover()+")");
-        holder.t5.setText(arrayList.get(position).getDeceased()+" ("+arrayList.get(position).getChange_deceased()+")");
+        holder.t2.setText(format.format(arrayList.get(position).getActive()));
+        holder.t3.setText(format.format(arrayList.get(position).getConf())+" ( +"+format.format(arrayList.get(position).getIncrease_conf())+")");
+        holder.t4.setText(format.format(arrayList.get(position).getRecovered())+" ( +"+format.format(arrayList.get(position).getChange_recover())+")");
+        holder.t5.setText(format.format(arrayList.get(position).getDeceased())+" ( +"+format.format(arrayList.get(position).getChange_deceased())+")");
         holder.t6.setText(arrayList.get(position).getDate());
     }
 
