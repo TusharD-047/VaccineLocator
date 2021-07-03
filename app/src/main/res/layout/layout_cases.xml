@@ -21,6 +21,7 @@
             android:id="@+id/stateName"
             android:text="State Name"
             android:layout_alignParentStart="true"
+            android:layout_toLeftOf="@id/date_cases"
             android:textColor="@color/black"
             />
         <TextView
