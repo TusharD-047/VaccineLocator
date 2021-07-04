@@ -50,7 +50,7 @@ import static com.unlock.vaccinelocator.App.CHANNEL_ID;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button b,stop,b1;
+    private Button b,stop,b1,b2;
     private RadioGroup radioGroup1,radioGroup2;
     private EditText date,pincode;
     private ImageView cal;
@@ -134,6 +134,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        b2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,Cases.class);
+                startActivity(intent);
+            }
+        });
 
 
     }
@@ -148,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
         date = findViewById(R.id.date);
         stop = findViewById(R.id.stop);
         b1= findViewById(R.id.searchbyD);
+        b2 = findViewById(R.id.casesSearch);
     }
 
     private void updateLabel() {
