@@ -13,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.VaccineLocator">
+        <activity android:name=".CasesByDistrict"></activity>
         <activity android:name=".Cases">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,9 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".SearchbyDistrict" />
-        <activity android:name=".MainActivity">
-
-        </activity>
+        <activity android:name=".MainActivity"></activity>
 
         <service android:name=".Service.BackgroundService" />
     </application>

@@ -136,6 +136,7 @@ public class Cases extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onResponse(String response) {
+                long res_change_conf=0, res_change_rec=0,res_change_dec=0;
                 long india_conf=0,india_recov=0,india_dec=0,india_active=0,ind_change_conf=0,india_change_rec=0,india_change_dec=0;
                 Format format = NumberFormat.getNumberInstance(new Locale("en","in"));
                 Log.e("check","done");
@@ -144,11 +145,13 @@ public class Cases extends AppCompatActivity {
                     for(int i=0;i<stateCodeNames.length;i++){
                         JSONObject jsonObject1 = jsonObject.getJSONObject(stateCodeNames[i]).getJSONObject("dates");
                         Calendar c1 = Calendar.getInstance();
+                        Calendar c2 = Calendar.getInstance();
+                        c2.add(Calendar.DATE,-1);
                         Date c = c1.getTime();
                         System.out.println("Current time => " + c);
                         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                         String formattedDate = df.format(c);
-                        Log.e("cases", formattedDate);
+                        String res_date = df.format(c2.getTime());
                         if(jsonObject1.has(formattedDate)){
                             int active;
                             int confirmed = jsonObject1.getJSONObject(formattedDate).getJSONObject("total").getInt("confirmed");
@@ -175,8 +178,10 @@ public class Cases extends AppCompatActivity {
 
                         }
                         else{
-                            c1.add(Calendar.DATE,-1);
-                            formattedDate = df.format(c1.getTime());
+                            do {
+                                c1.add(Calendar.DATE, -1);
+                                formattedDate = df.format(c1.getTime());
+                            } while (!jsonObject1.has(formattedDate));
                             int active;
                             int confirmed = jsonObject1.getJSONObject(formattedDate).getJSONObject("total").getInt("confirmed");
                             int deceased = jsonObject1.getJSONObject(formattedDate).getJSONObject("total").getInt("deceased");
@@ -196,8 +201,18 @@ public class Cases extends AppCompatActivity {
                             india_recov+=recovered;
                             india_dec+=deceased;
                             india_active+=active;
+                            if(res_date.equals(formattedDate)){
+                                res_change_conf += confirmed - confirmed_yest;
+                                res_change_dec += deceased - deceased_yest;
+                                res_change_rec += recovered - recovered_yest;
+                            }
                         }
 
+                    }
+                    if(ind_change_conf==0 && india_change_dec==0 && india_change_rec==0){
+                        ind_change_conf = res_change_conf;
+                        india_change_dec= res_change_dec;
+                        india_change_rec=res_change_rec;
                     }
                     t5.setText(String.valueOf(format.format(india_conf)));
                     t6.setText(String.valueOf(format.format(india_recov)));
@@ -223,7 +238,7 @@ public class Cases extends AppCompatActivity {
         queue.add(stringRequest);
     }
     private void recyclerinit(ArrayList<CasesState> casesStates) {
-        CasesStateAdapter casesStateAdapter = new CasesStateAdapter(casesStates,Cases.this,fullNames);
+        CasesStateAdapter casesStateAdapter = new CasesStateAdapter(casesStates,Cases.this,fullNames,stateCodeNames);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(casesStateAdapter);
