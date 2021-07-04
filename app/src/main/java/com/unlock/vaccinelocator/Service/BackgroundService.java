@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
@@ -29,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import static com.unlock.vaccinelocator.App.CHANNEL_ID;
 import static com.unlock.vaccinelocator.App.CHANNEL_ID_2;
@@ -68,7 +70,7 @@ public class BackgroundService extends Service {
                 .setContentIntent(pendingIntent)
                 .build();
         startForeground(2,notification);
-        return START_NOT_STICKY;
+        return START_REDELIVER_INTENT;
     }
 
     private void RunningRepeatedRequest() {
@@ -81,20 +83,24 @@ public class BackgroundService extends Service {
                 diff = (submittedTime-currTime)/(1000*60*60);
                 Log.e("Diff in hr","New Difference is "+diff);
                 Log.e("Diff in sec","New Difference is "+(submittedTime-currTime)/(1000));
-                if(diff>23){
+                if(diff>47){
                     sendApiRequest(pincode,age,vaccine,date);
-                    handler.postDelayed(this::run,1000*60*5);
-                    Toast.makeText(BackgroundService.this,"Request has been sent and will sent again after 5 min",Toast.LENGTH_SHORT).show();
+                    handler.postDelayed(this::run,1000*60*60);
+                    Toast.makeText(BackgroundService.this,"Request has been sent and will sent again after 1 hour",Toast.LENGTH_SHORT).show();
                 }
-                else if(diff>=0 && diff<=23)
+                else if(diff>=0 && diff<=47)
                 {
                     sendApiRequest(pincode, age, vaccine, date);
-                    handler.postDelayed(this::run,1000*60);
-                    Toast.makeText(BackgroundService.this,"Request has been sent and will sent again after 1min",Toast.LENGTH_SHORT).show();
+                    handler.postDelayed(this::run,1000*60*15);
+                    Toast.makeText(BackgroundService.this,"Request has been sent and will sent again after 15 min",Toast.LENGTH_SHORT).show();
                 }
                 else if(diff<0)
                 {
-                    //need to done---------------
+                    String msg = "Unfortunately Slots of "+vaccine+" for age group "+age+" cannot be made availaible..Please Set Schedule for another day";
+                    String title = "Try Another Day";
+                    SendNotif(msg,title);
+                    stopForeground(true);
+                    stopSelf();
                 }
 
             }
@@ -110,7 +116,6 @@ public class BackgroundService extends Service {
         pincode = intent.getStringExtra("pincode");
         submittedTime = intent.getLongExtra("submittedTime",-1);
         date = intent.getStringExtra("date");
-
     }
 
     private void sendApiRequest(String pincode, String age, String mvaccine, String date) {
@@ -176,13 +181,19 @@ public class BackgroundService extends Service {
     }
 
     private void SendNotif(String msg,String title) {
+        Intent intent = new Intent(this,MainActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this,0,intent,0);
         Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
         Notification notification = new NotificationCompat.Builder(this,CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_baseline_add_alert_24)
                 .setContentTitle(title)
                 .setContentText(msg)
+                .setColor(Color.BLUE)
+                .setStyle(new NotificationCompat.BigTextStyle())
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_EVENT)
+                .setContentIntent(contentIntent)
+                .setAutoCancel(true)
                 .build();
         notificationManagerCompat.notify(1,notification);
     }

@@ -10,6 +10,7 @@ import android.app.DatePickerDialog;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -67,6 +68,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 calendar.set(year,month,dayOfMonth);
+                calendar.set(Calendar.HOUR_OF_DAY,23);
+                calendar.set(Calendar.MINUTE,59);
+                calendar.set(Calendar.SECOND,0);
+                calendar.set(Calendar.MILLISECOND,0);
                 updateLabel();
             }
         };
@@ -177,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
                         {
                             Doses listItem = new Doses(CentreName,CentreAddr,vaccine,dose1,dose2,cost_vac,min_age);
                             arrayList.add(listItem);
-                            SendNotif(vaccine,slotAvail,min_age);
+//                            SendNotif(vaccine,slotAvail,min_age);
                             Log.e("vaccine",vaccine);
                             Log.e("dose1",dose1);
                         }
@@ -207,16 +212,4 @@ public class MainActivity extends AppCompatActivity {
         rv.setAdapter(slotAdapter);
     }
 
-    private void SendNotif(String vaccine, int slotAvail, String min_age) {
-        String msg = "Slots are Availaible of "+vaccine+" for age group "+min_age+" with total no, of free slots equals to "+slotAvail;
-        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
-        Notification notification = new NotificationCompat.Builder(this,CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_baseline_add_alert_24)
-                .setContentTitle("Vaccine Slot Availaible")
-                .setContentText(msg)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setCategory(NotificationCompat.CATEGORY_EVENT)
-                .build();
-        notificationManagerCompat.notify(1,notification);
-    }
 }
