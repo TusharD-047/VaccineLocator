@@ -22,6 +22,8 @@ public class App extends Application {
         {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID,"Alert !", NotificationManager.IMPORTANCE_HIGH);
             channel.setDescription("Vaccine slot availaible");
+            channel.enableLights(true);
+            channel.enableVibration(true);
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(channel);
 
