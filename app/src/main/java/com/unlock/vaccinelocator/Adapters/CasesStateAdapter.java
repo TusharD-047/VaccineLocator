@@ -2,8 +2,10 @@ package com.unlock.vaccinelocator.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.icu.text.NumberFormat;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +13,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.unlock.vaccinelocator.CasesByDistrict;
 import com.unlock.vaccinelocator.Models.CasesState;
 import com.unlock.vaccinelocator.R;
 
@@ -27,11 +31,13 @@ public class CasesStateAdapter extends RecyclerView.Adapter<CasesStateAdapter.My
     ArrayList<CasesState> arrayList;
     Context mContext;
     String [] abc;
+    String [] def;
 
-    public CasesStateAdapter(ArrayList<CasesState> arrayList, Context mContext, String[] abc) {
+    public CasesStateAdapter(ArrayList<CasesState> arrayList, Context mContext, String[] abc, String[] def) {
         this.arrayList = arrayList;
         this.mContext = mContext;
         this.abc = abc;
+        this.def = def;
     }
 
     @NonNull
@@ -56,6 +62,15 @@ public class CasesStateAdapter extends RecyclerView.Adapter<CasesStateAdapter.My
         holder.t4.setText(format.format(arrayList.get(position).getRecovered())+" ( +"+format.format(arrayList.get(position).getChange_recover())+")");
         holder.t5.setText(format.format(arrayList.get(position).getDeceased())+" ( +"+format.format(arrayList.get(position).getChange_deceased())+")");
         holder.t6.setText(arrayList.get(position).getDate());
+        holder.c1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, CasesByDistrict.class);
+                intent.putExtra("codeNames",def[position]);
+                intent.putExtra("actualName",abc[position]);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -65,6 +80,7 @@ public class CasesStateAdapter extends RecyclerView.Adapter<CasesStateAdapter.My
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView t1,t2,t3,t4,t5,t6;
+        CardView c1;
         public MyViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             t1 = itemView.findViewById(R.id.stateName);
@@ -73,6 +89,7 @@ public class CasesStateAdapter extends RecyclerView.Adapter<CasesStateAdapter.My
             t4 = itemView.findViewById(R.id.recov_val);
             t5 = itemView.findViewById(R.id.dec_val);
             t6 = itemView.findViewById(R.id.date_cases);
+            c1 = itemView.findViewById(R.id.card_cases);
         }
     }
 }
