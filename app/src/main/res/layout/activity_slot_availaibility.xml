@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fillViewport="true"
+    tools:context=".SlotAvailaibility">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Search by :-"
+                android:textColor="@color/black"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp">
+            </TextView>
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radiobtn_district"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="#ffffff"
+                    android:textAlignment="center"
+                    android:background="@drawable/radiobuttonleft_selector"
+                    android:checked="true"
+                    android:layout_weight="1"
+                    android:text="District">
+
+                </RadioButton>
+                <RadioButton
+                    android:id="@+id/radiobtn_pin"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="#ffffff"
+                    android:textAlignment="center"
+                    android:background="@drawable/radiobuttonmid_selector"
+                    android:text="Pincode">
+
+                </RadioButton>
+                <RadioButton
+                    android:id="@+id/radiobtn_location"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="#ffffff"
+                    android:textAlignment="center"
+                    android:background="@drawable/radiobuttonright_selector"
+                    android:text="Location">
+
+                </RadioButton>
+            </RadioGroup>
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/PincodeEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
+            android:hint="Type Pincode here">
+
+        </EditText>
+        <LinearLayout
+            android:layout_marginTop="16dp"
+            android:padding="8dp"
+            android:id="@+id/spinnerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible">
+            <Spinner
+                android:id="@+id/spinner1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp" />
+            <Spinner
+                android:layout_marginTop="24dp"
+                android:id="@+id/spinner2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choose Preffered Vaccine :-"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp">
+
+        </TextView>
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radiobtn_covaxin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="#ffffff"
+                android:textAlignment="center"
+                android:padding="16dp"
+                android:background="@drawable/radiobuttonvaccine_selector"
+                android:checked="true"
+                android:layout_weight="1"
+                android:text="Covaxin">
+
+            </RadioButton>
+            <RadioButton
+                android:id="@+id/radiobtn_covidsheild"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="#ffffff"
+                android:padding="16dp"
+                android:layout_marginLeft="8dp"
+                android:textAlignment="center"
+                android:background="@drawable/radiobuttonvaccine_selector"
+                android:text="Covidsheild">
+
+            </RadioButton>
+            <RadioButton
+                android:id="@+id/radiobtn_sputnik"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:padding="16dp"
+                android:layout_marginLeft="8dp"
+                android:layout_height="wrap_content"
+                android:button="#ffffff"
+                android:textAlignment="center"
+                android:background="@drawable/radiobuttonvaccine_selector"
+                android:text="Sputnik-V">
+
+            </RadioButton>
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choose Min Age limit :-"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp">
+
+        </TextView>
+
+        <RadioGroup
+            android:id="@+id/radio_group2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/age1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="18">
+
+            </RadioButton>
+            <RadioButton
+                android:id="@+id/age2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="45"
+                android:layout_marginEnd="8dp">
+            </RadioButton>
+
+        </RadioGroup>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+
+                android:hint="Choose Vaccination Date">
+
+            </EditText>
+            <ImageView
+                android:id="@+id/calender"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:src="@drawable/ic_baseline_calendar_today_24">
+
+            </ImageView>
+        </LinearLayout>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="Get slots data"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Availaible Vaccines list :-"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp">
+
+        </TextView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/recyclerView2"
+            android:layout_margin="16dp"
+            android:padding="4dp"/>
+    </LinearLayout>
+
+</ScrollView>
