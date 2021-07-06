@@ -1,39 +1,222 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
-
-   <Button
-       android:id="@+id/activity1"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:layout_margin="16dp"
-       android:layout_gravity="center"
-       android:text="Vaccine Scheduler">
-
-   </Button>
-
-    <Button
-        android:id="@+id/activity2"
+    tools:context=".MainActivity"
+    android:background="@drawable/home_gradient">
+<!--    Bottom Layout-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:id="@+id/bottom_layout"
+        android:background="@drawable/home_gradient_2"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+    </LinearLayout>
+<!--    First two Card Views-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:id="@+id/first_layout"
+        android:layout_marginTop="-50dp"
+        android:layout_alignTop="@+id/bottom_layout">
+        <androidx.cardview.widget.CardView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:elevation="10dp"
+            android:id="@+id/casesFull"
+            android:layout_marginEnd="30dp"
+            app:cardCornerRadius="16dp">
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:elevation="10dp"
+            android:layout_marginStart="30dp"
+            app:cardCornerRadius="16dp">
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+    <!--    Second two Card Views-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="horizontal"
+        android:layout_below="@+id/first_layout"
+        android:gravity="center">
+        <androidx.cardview.widget.CardView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:elevation="10dp"
+            android:layout_marginEnd="30dp"
+            app:cardCornerRadius="16dp">
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:elevation="10dp"
+            android:layout_marginStart="30dp"
+            app:cardCornerRadius="16dp">
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+    <!--    Location wise Cases-->
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_gravity="center"
-        android:text="Covid Cases">
-
-    </Button>
-    <Button
-        android:id="@+id/activity3"
+        android:fontFamily="@font/hashed"
+        android:text="Current Location"
+        android:drawablePadding="8dp"
+        android:drawableLeft="@drawable/ic_baseline_my_location_24"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:layout_marginTop="64dp"
+        android:layout_marginLeft="16dp"
+        android:id="@+id/current_location"/>
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_gravity="center"
-        android:text="Check Slots Availaibility">
-
-    </Button>
-</LinearLayout>
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:cardCornerRadius="16dp"
+        android:layout_below="@+id/current_location"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:padding="8dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:id="@+id/home_act_cases"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="20sp"
+                        android:fontFamily="@font/hashed"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/holo_blue_dark"
+                        android:text="Active"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@+id/home_act_cases"
+                        android:fontFamily="@font/hashed"
+                        android:id="@+id/home_act_value"
+                        android:textAlignment="center"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/holo_blue_light"
+                        android:textSize="16sp"
+                        android:text="4000"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:layout_weight="0.5">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:id="@+id/home_conf_cases"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="20sp"
+                        android:fontFamily="@font/hashed"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:text="Confirmed"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@+id/home_conf_cases"
+                        android:fontFamily="@font/hashed"
+                        android:textAlignment="center"
+                        android:id="@+id/home_conf_value"
+                        android:textColor="@android:color/holo_red_light"
+                        android:textSize="16sp"
+                        android:text="4000"/>
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:layout_weight="0.5">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:id="@+id/home_rec_cases"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="20sp"
+                        android:fontFamily="@font/hashed"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/holo_green_dark"
+                        android:text="Recovered"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@+id/home_rec_cases"
+                        android:fontFamily="@font/hashed"
+                        android:id="@+id/home_rec_value"
+                        android:textAlignment="center"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/holo_green_light"
+                        android:textSize="16sp"
+                        android:text="4000"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:padding="8dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:id="@+id/home_dec_cases"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="20sp"
+                        android:fontFamily="@font/hashed"
+                        android:textStyle="bold"
+                        android:textColor="#808080"
+                        android:text="Deceased"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@+id/home_dec_cases"
+                        android:fontFamily="@font/hashed"
+                        android:id="@+id/home_dec_value"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="16sp"
+                        android:text="4000"/>
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>
