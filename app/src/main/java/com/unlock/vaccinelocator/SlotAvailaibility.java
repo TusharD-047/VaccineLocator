@@ -64,11 +64,16 @@ public class SlotAvailaibility extends AppCompatActivity {
         setContentView(R.layout.activity_slot_availaibility);
         initviews();
 
-        String[] states = {"Select a State","Andhra Pradesh",
+        String[] states = {"Select a State","Andaman and Nicobar Islands",
+                "Andhra Pradesh",
                 "Arunachal Pradesh",
                 "Assam",
                 "Bihar",
+                "Chandigarh",
                 "Chhattisgarh",
+                "Dadra and Nagar Haveli and ",
+                "Daman and Diu",
+                "Delhi (NCT)",
                 "Goa",
                 "Gujarat",
                 "Haryana",
@@ -77,6 +82,8 @@ public class SlotAvailaibility extends AppCompatActivity {
                 "Jharkhand",
                 "Karnataka",
                 "Kerala",
+                "Ladakh",
+                "Lakshadweep",
                 "Madhya Pradesh",
                 "Maharashtra",
                 "Manipur",
@@ -84,24 +91,18 @@ public class SlotAvailaibility extends AppCompatActivity {
                 "Mizoram",
                 "Nagaland",
                 "Odisha",
+                "Puducherry",
                 "Punjab",
                 "Rajasthan",
                 "Sikkim",
                 "Tamil Nadu",
                 "Telangana",
                 "Tripura",
-                "Uttarakhand",
                 "Uttar Pradesh",
-                "West Bengal",
-                "Andaman and Nicobar Islands",
-                "Chandigarh",
-                "Dadra and Nagar Haveli",
-                "Daman and Diu",
-                "Delhi (NCT)",
-                "Lakshadweep",
-                "Puducherry",
-                "Ladakh"
+                "Uttarakhand",
+                "West Bengal"
         };
+        String[] state_id = {"0","1", "2", "3", "4", "5", "6", "7", "8","37","9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36"};
         String selectState = "Select District";
 
         progress = new ProgressDialog(this);
@@ -132,7 +133,7 @@ public class SlotAvailaibility extends AppCompatActivity {
                 selectStateFun(selectState);
                 if(position>0){
                     progress.show();
-                    getdata(states[position], districts);
+                    getdata(state_id[position], districts);
                     s2.setEnabled(true);
                 }
 
@@ -261,7 +262,7 @@ public class SlotAvailaibility extends AppCompatActivity {
                     preparelist(arrayList);
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Log.e("error",e.getMessage());
+
                 }
 
             }
@@ -276,13 +277,14 @@ public class SlotAvailaibility extends AppCompatActivity {
 
     private void getdata(String state, ArrayList<District> districts) {
         RequestQueue queue = Volley.newRequestQueue(SlotAvailaibility.this);
-        StringRequest request = new StringRequest(Request.Method.GET, "https://indian-states.herokuapp.com/State/"+state, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.GET, "https://cdn-api.co-vin.in/api/v2/admin/location/districts/"+state, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
+                    Log.e("each", String.valueOf(jsonObject));
                     JSONArray jsonArray = jsonObject.getJSONArray("districts");
-//                    Log.e("each", jsonArray.getJSONObject(0).get("district_name").toString());
+
                     for(int i=0;i<jsonArray.length();i++){
                         int id = jsonArray.getJSONObject(i).getInt("district_id");
                         String name = jsonArray.getJSONObject(i).get("district_name").toString();
@@ -293,7 +295,7 @@ public class SlotAvailaibility extends AppCompatActivity {
                     }
                     setAdapters2(districts);
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.e("error",e.getMessage());
                 }
             }
         }, error -> {
