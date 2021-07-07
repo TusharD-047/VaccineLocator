@@ -38,14 +38,10 @@ public class CasesByDistrict extends AppCompatActivity {
         setContentView(R.layout.activity_cases_by_district);
 
         TextView t15 = findViewById(R.id.actualName);
-        TextView t16 = findViewById(R.id.codeName);
         rv_dis = findViewById(R.id.rv10);
         searchView = findViewById(R.id.search_view);
 
-        
-
         t15.setText(getIntent().getStringExtra("actualName"));
-        t16.setText(getIntent().getStringExtra("codeNames"));
 
         sendApiRequest(arrayList);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -101,6 +97,7 @@ public class CasesByDistrict extends AppCompatActivity {
                         s1 = key;
                         JSONObject jsonObject1 = jsonObject.getJSONObject(key).getJSONObject("total");
                         JSONObject jsonObject2 = jsonObject.getJSONObject(key);
+                        Log.e("abc",String.valueOf(jsonObject1));
                         if(jsonObject2.has("delta")){
                             if(jsonObject2.getJSONObject("delta").has("confirmed"))
                                 s6 = jsonObject2.getJSONObject("delta").getInt("confirmed");
@@ -126,12 +123,14 @@ public class CasesByDistrict extends AppCompatActivity {
                                     s3 = jsonObject1.getInt("recovered");
                                     s4 = jsonObject1.getInt("deceased");
                                     s5 = (jsonObject1.getInt("confirmed")-jsonObject1.getInt("recovered")-jsonObject1.getInt("deceased"));
+
                                 }
                                 else{
                                     s2 = jsonObject1.getInt("confirmed");
                                     s3 = jsonObject1.getInt("recovered");
+                                    Log.e("deceased",key);
                                     s4 = 0;
-                                    s5 = (jsonObject1.getInt("confirmed")-jsonObject1.getInt("recovered")-jsonObject1.getInt("deceased"));
+                                    s5 = (jsonObject1.getInt("confirmed")-jsonObject1.getInt("recovered"));
                                 }
                             }
                             else {
@@ -149,14 +148,15 @@ public class CasesByDistrict extends AppCompatActivity {
                         }
                         CasesDistrict cD = new CasesDistrict(s1,s5,s2,s4,s3,s6,s7,s8);
                         arrayList.add(cD);
-                        initRecyclerView(arrayList);
-                        Log.e("size",String.valueOf(a));
+
+                        Log.e("size",String.valueOf(cD));
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Log.e("error",e.getMessage());
                 }
-
+                initRecyclerView(arrayList);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -168,7 +168,7 @@ public class CasesByDistrict extends AppCompatActivity {
     }
 
     private void initRecyclerView(ArrayList<CasesDistrict> arrayList) {
-        casesDistrictAdapter = new CasesDistrictAdapter(arrayList,CasesByDistrict.this);
+        casesDistrictAdapter = new CasesDistrictAdapter(arrayList,CasesByDistrict.this,getIntent().getStringExtra("Date"));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rv_dis.setLayoutManager(linearLayoutManager);
         rv_dis.setAdapter(casesDistrictAdapter);

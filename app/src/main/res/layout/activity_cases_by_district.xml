@@ -12,21 +12,13 @@
         android:layout_height="wrap_content"
         android:id="@+id/actualName"
         android:text="Actual Name"
-        android:layout_margin="16dp"
+        android:layout_margin="8dp"
+        android:padding="4dp"
         android:textAlignment="center"
         android:textSize="20sp"
+        android:layout_gravity="center"
         android:fontFamily="@font/arctic"
-        android:textColor="@color/black"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/codeName"
-        android:text="Actual Name"
-        android:layout_margin="16dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:fontFamily="@font/arctic"
-        android:textColor="@color/black"/>
+        android:textColor="@android:color/background_dark"/>
     <androidx.appcompat.widget.SearchView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
