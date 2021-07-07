@@ -7,198 +7,255 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:fillViewport="true"
+    android:background="#BAF2FB"
     tools:context=".SlotAvailaibility">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Search by :-"
-                android:textColor="@color/black"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="16dp">
-            </TextView>
-
-            <RadioGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/radiobtn_district"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:button="@color/white"
-                    android:textAlignment="center"
-                    android:background="@drawable/radiobuttonleft_selector"
-                    android:checked="true"
-                    android:layout_weight="1"
-                    android:text="District">
-
-                </RadioButton>
-                <RadioButton
-                    android:id="@+id/radiobtn_pin"
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:button="@color/white"
-                    android:textAlignment="center"
-                    android:background="@drawable/radiobuttonmid_selector"
-                    android:text="Pincode">
-
-                </RadioButton>
-                <RadioButton
-                    android:id="@+id/radiobtn_location"
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:button="@color/white"
-                    android:textAlignment="center"
-                    android:background="@drawable/radiobuttonright_selector"
-                    android:text="Location">
-
-                </RadioButton>
-            </RadioGroup>
-        </LinearLayout>
-
-        <EditText
-            android:id="@+id/PincodeEdit"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
-            android:visibility="gone"
-            android:hint="Type Pincode here">
+            android:layout_marginBottom="8dp"
+            app:cardBackgroundColor="#F3F3F3"
+            app:cardCornerRadius="10dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:orientation="vertical">
 
-        </EditText>
-        <LinearLayout
-            android:layout_marginTop="16dp"
-            android:padding="8dp"
-            android:id="@+id/spinnerLayout"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Search by :-"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="8dp">
+                </TextView>
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/radiobtn_district"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:button="@color/white"
+                        android:textAlignment="center"
+                        android:background="@drawable/radiobuttonleft_selector"
+                        android:checked="true"
+                        android:layout_weight="1"
+                        android:text="District">
+
+                    </RadioButton>
+                    <RadioButton
+                        android:id="@+id/radiobtn_pin"
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:button="@color/white"
+                        android:textAlignment="center"
+                        android:background="@drawable/radiobuttonmid_selector"
+                        android:text="Pincode">
+
+                    </RadioButton>
+                    <RadioButton
+                        android:id="@+id/radiobtn_location"
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:button="@color/white"
+                        android:textAlignment="center"
+                        android:background="@drawable/radiobuttonright_selector"
+                        android:text="Location">
+
+                    </RadioButton>
+                </RadioGroup>
+
+                <EditText
+                    android:id="@+id/PincodeEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="16dp"
+                    android:visibility="gone"
+                    android:hint="Type Pincode here">
+
+                </EditText>
+                <LinearLayout
+                    android:layout_marginTop="16dp"
+                    android:padding="8dp"
+                    android:id="@+id/spinnerLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+                    <Spinner
+                        android:id="@+id/spinner1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp" />
+                    <Spinner
+                        android:layout_marginTop="24dp"
+                        android:id="@+id/spinner2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="visible">
-            <Spinner
-                android:id="@+id/spinner1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp" />
-            <Spinner
-                android:layout_marginTop="24dp"
-                android:id="@+id/spinner2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp" />
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Choose Preffered Vaccine :-"
-            android:textColor="@color/black"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp">
-
-        </TextView>
-
-        <RadioGroup
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="8dp"
-            android:orientation="horizontal">
+            android:layout_marginBottom="8dp"
+            app:cardCornerRadius="10dp"
+            app:cardBackgroundColor="#F3F3F3">
 
-            <RadioButton
-                android:id="@+id/radiobtn_covaxin"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:button="@color/white"
-                android:textAlignment="center"
-                android:padding="16dp"
-                android:background="@drawable/radiobuttonvaccine_selector"
-                android:checked="true"
-                android:layout_weight="1"
-                android:text="Covaxin">
+                android:padding="8dp"
+                android:orientation="vertical">
 
-            </RadioButton>
-            <RadioButton
-                android:id="@+id/radiobtn_covidsheild"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:button="@color/white"
-                android:padding="16dp"
-                android:layout_marginLeft="8dp"
-                android:textAlignment="center"
-                android:background="@drawable/radiobuttonvaccine_selector"
-                android:text="Covidsheild">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Choose Preffered Vaccine :-"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="8dp">
 
-            </RadioButton>
-            <RadioButton
-                android:id="@+id/radiobtn_sputnik"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:padding="16dp"
-                android:layout_marginLeft="8dp"
-                android:layout_height="wrap_content"
-                android:button="@color/white"
-                android:textAlignment="center"
-                android:background="@drawable/radiobuttonvaccine_selector"
-                android:text="Sputnik-V">
+                </TextView>
 
-            </RadioButton>
-        </RadioGroup>
+                <RadioGroup
+                    android:id="@+id/vac_radiogrup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
+                    <RadioButton
+                        android:id="@+id/radiobtn_covaxin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:button="@color/white"
+                        android:textAlignment="center"
+                        android:padding="16dp"
+                        android:background="@drawable/radiobuttonvaccine_selector"
+                        android:checked="true"
+                        android:layout_weight="1"
+                        android:text="Covaxin">
+
+                    </RadioButton>
+                    <RadioButton
+                        android:id="@+id/radiobtn_covidsheild"
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:button="@color/white"
+                        android:padding="16dp"
+                        android:layout_marginLeft="8dp"
+                        android:textAlignment="center"
+                        android:background="@drawable/radiobuttonvaccine_selector"
+                        android:text="Covishield">
+
+                    </RadioButton>
+                    <RadioButton
+                        android:id="@+id/radiobtn_sputnik"
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:padding="16dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_height="wrap_content"
+                        android:button="@color/white"
+                        android:textAlignment="center"
+                        android:background="@drawable/radiobuttonvaccine_selector"
+                        android:text="Sputnik-V">
+
+                    </RadioButton>
+                </RadioGroup>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Choose Min Age limit :-"
-            android:textColor="@color/black"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp">
-
-        </TextView>
-
-        <RadioGroup
-            android:id="@+id/radio_group2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            app:cardBackgroundColor="#F3F3F3"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginStart="16dp"
-            android:orientation="horizontal">
-            <RadioButton
-                android:id="@+id/age1"
+            android:layout_marginBottom="8dp"
+            app:cardCornerRadius="5dp">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="18">
+                android:padding="8dp"
+                android:orientation="vertical">
 
-            </RadioButton>
-            <RadioButton
-                android:id="@+id/age2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="45"
-                android:layout_marginEnd="8dp">
-            </RadioButton>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Choose Min Age limit :-"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="16dp">
 
-        </RadioGroup>
+                </TextView>
+
+                <RadioGroup
+                    android:id="@+id/radio_group2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="16dp"
+                    android:orientation="horizontal">
+                    <RadioButton
+                        android:id="@+id/age1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:checked="true"
+                        android:text="18">
+
+                    </RadioButton>
+                    <RadioButton
+                        android:id="@+id/age2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="45"
+                        android:layout_marginEnd="8dp">
+                    </RadioButton>
+
+                </RadioGroup>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -226,6 +283,7 @@
             </ImageView>
         </LinearLayout>
         <Button
+            android:id="@+id/getslot_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"

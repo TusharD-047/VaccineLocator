@@ -22,7 +22,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.unlock.vaccinelocator.MainActivity;
-import com.unlock.vaccinelocator.Models.Doses;
 import com.unlock.vaccinelocator.R;
 
 import org.json.JSONArray;
@@ -30,7 +29,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import static com.unlock.vaccinelocator.App.CHANNEL_ID;
 import static com.unlock.vaccinelocator.App.CHANNEL_ID_2;
@@ -42,6 +40,7 @@ public class BackgroundService extends Service {
     private Runnable backgroundRequest;
     private long currTime,diff,submittedTime;
     private String age="",vaccine="",pincode="",date="";
+    int distr_id;
     private NotificationManagerCompat notificationManagerCompat;
     @Override
     public void onCreate() {
@@ -52,7 +51,7 @@ public class BackgroundService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         notificationManagerCompat = NotificationManagerCompat.from(BackgroundService.this);
         getDataFromIntent(intent);
-        RunningRepeatedRequest();
+        RunningRepeatedRequest(intent);
         return makeServiceForeground();
 
     }
@@ -73,7 +72,7 @@ public class BackgroundService extends Service {
         return START_REDELIVER_INTENT;
     }
 
-    private void RunningRepeatedRequest() {
+    private void RunningRepeatedRequest(Intent intent) {
 
         backgroundRequest = new Runnable() {
             @Override
@@ -84,13 +83,31 @@ public class BackgroundService extends Service {
                 Log.e("Diff in hr","New Difference is "+diff);
                 Log.e("Diff in sec","New Difference is "+(submittedTime-currTime)/(1000));
                 if(diff>47){
-                    sendApiRequest(pincode,age,vaccine,date);
+                    if(intent.hasExtra("pincode"))
+                    {
+                        String url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode="+pincode+"&date="+date;
+                        sendApiRequest(age,vaccine,url);
+                    }
+                    else if(intent.hasExtra("distr_id"))
+                    {
+                        String url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id="+distr_id+"&date="+date;
+                        sendApiRequest(age,vaccine,url);
+                    }
                     handler.postDelayed(this::run,1000*60*60);
                     Toast.makeText(BackgroundService.this,"Request has been sent and will sent again after 1 hour",Toast.LENGTH_SHORT).show();
                 }
                 else if(diff>=0 && diff<=47)
                 {
-                    sendApiRequest(pincode, age, vaccine, date);
+                    if(intent.hasExtra("pincode"))
+                    {
+                        String url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode="+pincode+"&date="+date;
+                        sendApiRequest(age,vaccine,url);
+                    }
+                    else if(intent.hasExtra("distr_id"))
+                    {
+                        String url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id="+distr_id+"&date="+date;
+                        sendApiRequest(age,vaccine,url);
+                    }
                     handler.postDelayed(this::run,1000*60*15);
                     Toast.makeText(BackgroundService.this,"Request has been sent and will sent again after 15 min",Toast.LENGTH_SHORT).show();
                 }
@@ -113,14 +130,21 @@ public class BackgroundService extends Service {
         diff = intent.getLongExtra("difference",-1);
         age = intent.getStringExtra("age");
         vaccine = intent.getStringExtra("vaccine");
-        pincode = intent.getStringExtra("pincode");
+        if(intent.hasExtra("pincode"))
+        {
+            pincode = intent.getStringExtra("pincode");
+        }
+        if(intent.hasExtra("distr_id"))
+        {
+            distr_id = intent.getIntExtra("distr_id",-1);
+        }
         submittedTime = intent.getLongExtra("submittedTime",-1);
         date = intent.getStringExtra("date");
     }
 
-    private void sendApiRequest(String pincode, String age, String mvaccine, String date) {
+    private void sendApiRequest(String age, String mvaccine, String url) {
         RequestQueue queue = Volley.newRequestQueue(BackgroundService.this);
-        StringRequest request = new StringRequest(Request.Method.GET, "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode="+pincode+"&date="+date, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 //                        Log.e("response",response);

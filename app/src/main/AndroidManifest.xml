@@ -18,7 +18,6 @@
         <activity android:name=".VaccineNotifSchedule" />
         <activity android:name=".CasesByDistrict" />
         <activity android:name=".Cases"></activity>
-        <activity android:name=".SearchbyDistrict" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

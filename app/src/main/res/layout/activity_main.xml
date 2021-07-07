@@ -25,6 +25,7 @@
         android:id="@+id/first_layout"
         android:layout_marginTop="-50dp"
         android:layout_alignTop="@+id/bottom_layout">
+
         <androidx.cardview.widget.CardView
             android:layout_width="100dp"
             android:layout_height="100dp"
@@ -32,13 +33,31 @@
             android:id="@+id/casesFull"
             android:layout_marginEnd="30dp"
             app:cardCornerRadius="16dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="22sp"
+                android:text="Cases"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:fontFamily="@font/arctic"/>
         </androidx.cardview.widget.CardView>
+
         <androidx.cardview.widget.CardView
+            android:id="@+id/slot_availcard"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:elevation="10dp"
             android:layout_marginStart="30dp"
             app:cardCornerRadius="16dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="22sp"
+                android:text="Slot Avail"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:fontFamily="@font/arctic"/>
         </androidx.cardview.widget.CardView>
     </LinearLayout>
     <!--    Second two Card Views-->
@@ -49,11 +68,20 @@
         android:layout_below="@+id/first_layout"
         android:gravity="center">
         <androidx.cardview.widget.CardView
+            android:id="@+id/vaccine_schedulercard"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:elevation="10dp"
             android:layout_marginEnd="30dp"
             app:cardCornerRadius="16dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="18sp"
+                android:text="Scheduler"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:fontFamily="@font/arctic"/>
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
             android:layout_width="100dp"

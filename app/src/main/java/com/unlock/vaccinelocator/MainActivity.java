@@ -51,17 +51,31 @@ import static com.unlock.vaccinelocator.App.CHANNEL_ID;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button b1,b2,b3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         CardView c1 = findViewById(R.id.casesFull);
+        CardView c2 = findViewById(R.id.slot_availcard);
+        CardView c3 = findViewById(R.id.vaccine_schedulercard);
         c1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this,Cases.class));
+            }
+        });
+        c2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,SlotAvailaibility.class));
+            }
+        });
+        c3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,VaccineNotifSchedule.class));
             }
         });
 
