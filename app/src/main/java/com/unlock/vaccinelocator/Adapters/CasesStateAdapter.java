@@ -68,6 +68,7 @@ public class CasesStateAdapter extends RecyclerView.Adapter<CasesStateAdapter.My
                 Intent intent = new Intent(mContext, CasesByDistrict.class);
                 intent.putExtra("codeNames",def[position]);
                 intent.putExtra("actualName",abc[position]);
+                intent.putExtra("Date",arrayList.get(position).getDate());
                 mContext.startActivity(intent);
             }
         });

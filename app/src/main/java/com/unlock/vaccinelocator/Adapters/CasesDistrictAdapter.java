@@ -26,19 +26,21 @@ import java.util.Locale;
 public class CasesDistrictAdapter extends RecyclerView.Adapter<CasesDistrictAdapter.MyViewHolder> {
     ArrayList<CasesDistrict> casesDistricts;
     Context mContext;
+    String Date;
 
-    public CasesDistrictAdapter(ArrayList<CasesDistrict> casesDistricts, Context mContext) {
+    public CasesDistrictAdapter(ArrayList<CasesDistrict> casesDistricts, Context mContext, String Date) {
         this.casesDistricts = casesDistricts;
         this.mContext = mContext;
+        this.Date = Date;
     }
 
     public void filterList(ArrayList<CasesDistrict> filterllist) {
         casesDistricts = filterllist;
         notifyDataSetChanged();
-    }
+    }    @NotNull
+
 
     @NonNull
-    @NotNull
     @Override
     public CasesDistrictAdapter.MyViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.layout_cases,parent,false);
@@ -55,7 +57,7 @@ public class CasesDistrictAdapter extends RecyclerView.Adapter<CasesDistrictAdap
         holder.t23.setText(format.format(casesDistricts.get(position).getConfirmed_dis())+" ( +"+format.format(casesDistricts.get(position).getChng_conf_dis())+")");
         holder.t24.setText(format.format(casesDistricts.get(position).getRec_dis())+" ( +"+format.format(casesDistricts.get(position).getChng_rec_dis())+")");
         holder.t25.setText(format.format(casesDistricts.get(position).getDec_dis())+" ( +"+format.format(casesDistricts.get(position).getChng_dec_dis())+")");
-        holder.t26.setText("abc");
+        holder.t26.setText(Date);
     }
 
     @Override
