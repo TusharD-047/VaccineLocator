@@ -1,12 +1,18 @@
 package com.unlock.vaccinelocator;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -173,5 +179,23 @@ public class CasesByDistrict extends AppCompatActivity {
         rv_dis.setLayoutManager(linearLayoutManager);
         rv_dis.setAdapter(casesDistrictAdapter);
 
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case 111:
+                Toast.makeText(CasesByDistrict.this,"Added To HomePage"+item.getGroupId(),Toast.LENGTH_SHORT).show();
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                prefs.edit().putInt("DistrictNumber",item.getGroupId()).apply();
+                prefs.edit().putString("StateCodeName",getIntent().getStringExtra("codeNames")).apply();
+                startActivity(new Intent(CasesByDistrict.this,MainActivity.class));
+
+                break;
+            case 112:
+                Toast.makeText(CasesByDistrict.this,"Cancel",Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return super.onContextItemSelected(item);
     }
 }

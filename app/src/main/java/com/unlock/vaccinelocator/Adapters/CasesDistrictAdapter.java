@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.icu.text.NumberFormat;
 import android.os.Build;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.unlock.vaccinelocator.Models.CasesDistrict;
@@ -65,8 +67,9 @@ public class CasesDistrictAdapter extends RecyclerView.Adapter<CasesDistrictAdap
         return casesDistricts.size();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener{
         TextView t21,t22,t23,t24,t25,t26;
+        CardView c1;
         public MyViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             t21 = itemView.findViewById(R.id.stateName);
@@ -75,6 +78,16 @@ public class CasesDistrictAdapter extends RecyclerView.Adapter<CasesDistrictAdap
             t24 = itemView.findViewById(R.id.recov_val);
             t25 = itemView.findViewById(R.id.dec_val);
             t26 = itemView.findViewById(R.id.date_cases);
+            c1 = itemView.findViewById(R.id.card_cases);
+            c1.setOnCreateContextMenuListener(this);
         }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            menu.setHeaderTitle("Select A Option");
+            menu.add(this.getAdapterPosition(),111,0,"Add To Home Page");
+            menu.add(this.getAdapterPosition(),112,0,"Cancel");
+        }
+
     }
 }
