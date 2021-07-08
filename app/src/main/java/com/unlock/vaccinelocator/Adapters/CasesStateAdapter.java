@@ -3,12 +3,15 @@ package com.unlock.vaccinelocator.Adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.icu.text.NumberFormat;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +20,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.unlock.vaccinelocator.CasesByDistrict;
+import com.unlock.vaccinelocator.MainActivity;
 import com.unlock.vaccinelocator.Models.CasesState;
 import com.unlock.vaccinelocator.R;
 
@@ -72,6 +76,14 @@ public class CasesStateAdapter extends RecyclerView.Adapter<CasesStateAdapter.My
                 mContext.startActivity(intent);
             }
         });
+        holder.b1.setOnClickListener(v -> {
+            Intent intent = new Intent(mContext, MainActivity.class);
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+            prefs.edit().putString("StateActualName",abc[position]).apply();
+            prefs.edit().putString("StateCodeName",def[position]).apply();
+            prefs.edit().putString("Home","State").apply();
+            mContext.startActivity(intent);
+        });
     }
 
     @Override
@@ -82,6 +94,7 @@ public class CasesStateAdapter extends RecyclerView.Adapter<CasesStateAdapter.My
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView t1,t2,t3,t4,t5,t6;
         CardView c1;
+        Button b1;
         public MyViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             t1 = itemView.findViewById(R.id.stateName);
@@ -91,6 +104,7 @@ public class CasesStateAdapter extends RecyclerView.Adapter<CasesStateAdapter.My
             t5 = itemView.findViewById(R.id.dec_val);
             t6 = itemView.findViewById(R.id.date_cases);
             c1 = itemView.findViewById(R.id.card_cases);
+            b1 = itemView.findViewById(R.id.add_home);
         }
     }
 }
