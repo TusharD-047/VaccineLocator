@@ -2,12 +2,16 @@ package com.unlock.vaccinelocator.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.icu.text.NumberFormat;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +19,7 @@ import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.unlock.vaccinelocator.MainActivity;
 import com.unlock.vaccinelocator.Models.CasesDistrict;
 import com.unlock.vaccinelocator.R;
 
@@ -60,6 +65,13 @@ public class CasesDistrictAdapter extends RecyclerView.Adapter<CasesDistrictAdap
         holder.t24.setText(format.format(casesDistricts.get(position).getRec_dis())+" ( +"+format.format(casesDistricts.get(position).getChng_rec_dis())+")");
         holder.t25.setText(format.format(casesDistricts.get(position).getDec_dis())+" ( +"+format.format(casesDistricts.get(position).getChng_dec_dis())+")");
         holder.t26.setText(Date);
+        holder.b1.setOnClickListener(v -> {
+            Intent intent = new Intent(mContext, MainActivity.class);
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+            prefs.edit().putString("DistrictNumber",casesDistricts.get(holder.getAdapterPosition()).getDis_name()).apply();
+            prefs.edit().putString("Home","District").apply();
+            mContext.startActivity(intent);
+        });
     }
 
     @Override
@@ -67,9 +79,10 @@ public class CasesDistrictAdapter extends RecyclerView.Adapter<CasesDistrictAdap
         return casesDistricts.size();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener{
+    public static class MyViewHolder extends RecyclerView.ViewHolder{
         TextView t21,t22,t23,t24,t25,t26;
         CardView c1;
+        Button b1;
         public MyViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             t21 = itemView.findViewById(R.id.stateName);
@@ -79,15 +92,9 @@ public class CasesDistrictAdapter extends RecyclerView.Adapter<CasesDistrictAdap
             t25 = itemView.findViewById(R.id.dec_val);
             t26 = itemView.findViewById(R.id.date_cases);
             c1 = itemView.findViewById(R.id.card_cases);
-            c1.setOnCreateContextMenuListener(this);
+            b1 = itemView.findViewById(R.id.add_home);
         }
 
-        @Override
-        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            menu.setHeaderTitle("Select A Option");
-            menu.add(this.getAdapterPosition(),111,0,"Add To Home Page");
-            menu.add(this.getAdapterPosition(),112,0,"Cancel");
-        }
 
     }
 }

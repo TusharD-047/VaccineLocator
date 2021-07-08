@@ -1,5 +1,6 @@
 package com.unlock.vaccinelocator;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.NotificationCompat;
@@ -15,6 +16,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.icu.text.NumberFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -39,6 +41,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.unlock.vaccinelocator.Adapters.SlotAdapter;
 import com.unlock.vaccinelocator.Models.CasesDistrict;
+import com.unlock.vaccinelocator.Models.CasesState;
 import com.unlock.vaccinelocator.Models.Doses;
 import com.unlock.vaccinelocator.Service.BackgroundService;
 
@@ -46,6 +49,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -95,15 +99,74 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        Log.e("funcCal",preferences.getInt("DistrictNumber",0)+"");
 
-        if(preferences.contains("DistrictNumber") && preferences.contains("StateCodeName")) {
-            getHomePageCases(preferences.getInt("DistrictNumber", 0), preferences.getString("StateCodeName", "TT"));
+        if(preferences.contains("DistrictNumber") && preferences.contains("StateCodeName") && preferences.contains("Home")) {
+            if(preferences.getString("Home", "any").equals("District")){
+                getHomePageCases(preferences.getString("DistrictNumber", "0"), preferences.getString("StateCodeName", "TT"));
+            }
+            else{
+                getStateCases(preferences.getString("StateCodeName", "0"), preferences.getString("StateActualName", "0"));
+            }
         }
 
     }
 
-    private void getHomePageCases(int districtNumber, String string) {
+    private void getStateCases(String stateCodeName, String stateActualName) {
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://api.covid19india.org/v4/min/timeseries.min.json", new Response.Listener<String>() {
+            @SuppressLint("SetTextI18n")
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(String response) {
+                Format format = NumberFormat.getNumberInstance(new Locale("en", "in"));
+                Log.e("check", "done");
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONObject jsonObject1 = jsonObject.getJSONObject(stateCodeName).getJSONObject("dates");
+                    Calendar c1 = Calendar.getInstance();
+                    Calendar c2 = Calendar.getInstance();
+                    c2.add(Calendar.DATE, -1);
+                    Date c = c1.getTime();
+                    System.out.println("Current time => " + c);
+                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    String formattedDate = df.format(c);
+                    while (!jsonObject1.has(formattedDate)) {
+                        c1.add(Calendar.DATE, -1);
+                        formattedDate = df.format(c1.getTime());
+                    } ;
+                        int active;
+                        int confirmed = jsonObject1.getJSONObject(formattedDate).getJSONObject("total").getInt("confirmed");
+                        int deceased = jsonObject1.getJSONObject(formattedDate).getJSONObject("total").getInt("deceased");
+                        int recovered = jsonObject1.getJSONObject(formattedDate).getJSONObject("total").getInt("recovered");
+                        if (jsonObject1.getJSONObject(formattedDate).getJSONObject("total").has("other"))
+                            active = confirmed - deceased - recovered - jsonObject1.getJSONObject(formattedDate).getJSONObject("total").getInt("other");
+                        else
+                            active = confirmed - deceased - recovered;
+                        c1.add(Calendar.DATE, -1);
+                        String yesterday = df.format(c1.getTime());
+                        int confirmed_yest = jsonObject1.getJSONObject(yesterday).getJSONObject("total").getInt("confirmed");
+                        int deceased_yest = jsonObject1.getJSONObject(yesterday).getJSONObject("total").getInt("deceased");
+                        int recovered_yest = jsonObject1.getJSONObject(yesterday).getJSONObject("total").getInt("recovered");
+                    t31.setText(format.format(active));
+                    t32.setText(confirmed+"(+" +(confirmed-confirmed_yest)+ ")");
+                    t33.setText(deceased+"(+" +(deceased-deceased_yest)+ ")");
+                    t34.setText(recovered+"(+" +(recovered-recovered_yest)+ ")");
+                    t35.setText(stateActualName);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("err","This is error"+" "+error);
+            }
+        });
+        queue.add(stringRequest);
+    }
+
+    private void getHomePageCases(String districtNumber, String string) {
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://api.covid19india.org/v4/min/data.min.json", new Response.Listener<String>() {
             @SuppressLint("SetTextI18n")
@@ -116,9 +179,9 @@ public class MainActivity extends AppCompatActivity {
                     int s2=0,s3=0,s4=0,s5 = 0,s6=0,s7=0,s8=0,a=0;
                     while (iter.hasNext()) {
                         String key = iter.next();
-                        if(a==districtNumber)
+                        s1 = key;
+                        if(s1.contains(districtNumber))
                         {
-                            s1 = key;
                             JSONObject jsonObject1 = jsonObject.getJSONObject(key).getJSONObject("total");
                             JSONObject jsonObject2 = jsonObject.getJSONObject(key);
                             Log.e("abc",String.valueOf(jsonObject1));

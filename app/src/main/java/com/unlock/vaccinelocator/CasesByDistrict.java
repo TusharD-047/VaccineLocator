@@ -48,11 +48,14 @@ public class CasesByDistrict extends AppCompatActivity {
         searchView = findViewById(R.id.search_view);
 
         t15.setText(getIntent().getStringExtra("actualName"));
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        prefs.edit().putString("StateCodeName",getIntent().getStringExtra("codeNames")).apply();
 
         sendApiRequest(arrayList);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                closeContextMenu();
                 return false;
             }
 
@@ -181,21 +184,4 @@ public class CasesByDistrict extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onContextItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case 111:
-                Toast.makeText(CasesByDistrict.this,"Added To HomePage"+item.getGroupId(),Toast.LENGTH_SHORT).show();
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-                prefs.edit().putInt("DistrictNumber",item.getGroupId()).apply();
-                prefs.edit().putString("StateCodeName",getIntent().getStringExtra("codeNames")).apply();
-                startActivity(new Intent(CasesByDistrict.this,MainActivity.class));
-
-                break;
-            case 112:
-                Toast.makeText(CasesByDistrict.this,"Cancel",Toast.LENGTH_SHORT).show();
-                break;
-        }
-        return super.onContextItemSelected(item);
-    }
 }
