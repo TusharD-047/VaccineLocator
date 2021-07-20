@@ -1,12 +1,24 @@
 package com.unlock.vaccinelocator;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.app.VoiceInteractor;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -27,6 +40,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.unlock.vaccinelocator.Adapters.SlotAdapter;
 import com.unlock.vaccinelocator.Models.District;
 import com.unlock.vaccinelocator.Models.Doses;
@@ -35,6 +51,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.Permission;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -44,27 +62,32 @@ import java.util.Locale;
 public class SlotAvailaibility extends AppCompatActivity {
 
     private static String TAG = "SLOT_AVAILAIBILITY";
-    private RadioButton distr,pin,locat;
+    private RadioButton distr, pin, locat;
     private LinearLayout layout;
-    private EditText Edit_pin;
+    private EditText Edit_pin, long_edit, lat_edit;
     private String strings;
+    private TextView t111;
     private ArrayAdapter<String> a;
-    private Spinner s2,s1;
+    private Spinner s2, s1;
     private ArrayList<District> districts;
-    private RadioGroup r1,r2;
+    private RadioGroup r1, r2;
     private ProgressDialog progress;
     private ImageView cal1;
     private Calendar calendar = Calendar.getInstance();
     private EditText date_edit;
     private RecyclerView rv2;
-    private Button submit;
+    private Button submit, get_location;
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+    private LocationManager locationManager;
+    float lat_location, long_location;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_slot_availaibility);
         initviews();
 
-        String[] states = {"Select a State","Andaman and Nicobar Islands",
+        String[] states = {"Select a State", "Andaman and Nicobar Islands",
                 "Andhra Pradesh",
                 "Arunachal Pradesh",
                 "Assam",
@@ -102,7 +125,7 @@ public class SlotAvailaibility extends AppCompatActivity {
                 "Uttarakhand",
                 "West Bengal"
         };
-        String[] state_id = {"0","1", "2", "3", "4", "5", "6", "7", "8","37","9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36"};
+        String[] state_id = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "37", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36"};
         String selectState = "Select District";
 
         progress = new ProgressDialog(this);
@@ -115,7 +138,7 @@ public class SlotAvailaibility extends AppCompatActivity {
         final DatePickerDialog.OnDateSetListener Datedialog = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                calendar.set(year,month,dayOfMonth);
+                calendar.set(year, month, dayOfMonth);
                 updateLabel();
             }
         };
@@ -131,7 +154,7 @@ public class SlotAvailaibility extends AppCompatActivity {
                 districts = new ArrayList<>();
 
                 selectStateFun(selectState);
-                if(position>0){
+                if (position > 0) {
                     progress.show();
                     getdata(state_id[position], districts);
                     s2.setEnabled(true);
@@ -159,7 +182,7 @@ public class SlotAvailaibility extends AppCompatActivity {
         cal1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(SlotAvailaibility.this,Datedialog,calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)).show();
+                new DatePickerDialog(SlotAvailaibility.this, Datedialog, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
 
@@ -167,10 +190,13 @@ public class SlotAvailaibility extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 boolean ischecked = distr.isChecked();
-                if(ischecked)
-                {
+                if (ischecked) {
                     layout.setVisibility(View.VISIBLE);
                     Edit_pin.setVisibility(View.GONE);
+                    lat_edit.setVisibility(View.GONE);
+                    long_edit.setVisibility(View.GONE);
+                    get_location.setVisibility(View.GONE);
+                    t111.setVisibility(View.GONE);
                 }
             }
         });
@@ -178,10 +204,13 @@ public class SlotAvailaibility extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 boolean ischecked = pin.isChecked();
-                if(ischecked)
-                {
+                if (ischecked) {
                     layout.setVisibility(View.GONE);
                     Edit_pin.setVisibility(View.VISIBLE);
+                    lat_edit.setVisibility(View.GONE);
+                    long_edit.setVisibility(View.GONE);
+                    get_location.setVisibility(View.GONE);
+                    t111.setVisibility(View.GONE);
                 }
             }
         });
@@ -189,10 +218,13 @@ public class SlotAvailaibility extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 boolean ischecked = locat.isChecked();
-                if(ischecked)
-                {
+                if (ischecked) {
                     layout.setVisibility(View.GONE);
                     Edit_pin.setVisibility(View.GONE);
+//                    lat_edit.setVisibility(View.VISIBLE);
+//                    long_edit.setVisibility(View.VISIBLE);
+//                    get_location.setVisibility(View.VISIBLE);
+//                    t111.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -205,31 +237,99 @@ public class SlotAvailaibility extends AppCompatActivity {
                 String vacBrand = vaccine.getText().toString().toUpperCase();
                 String date = date_edit.getText().toString();
                 String agel = age.getText().toString();
-                if(distr.isChecked() && !vacBrand.isEmpty() && !date.isEmpty() && !agel.isEmpty() && s1.getSelectedItemPosition()!=0)
-                {
+                if (distr.isChecked() && !vacBrand.isEmpty() && !date.isEmpty() && !agel.isEmpty() && s1.getSelectedItemPosition() != 0) {
                     int dis_id = districts.get(s2.getSelectedItemPosition()).getDis_id();
                     Log.e("disid", String.valueOf(dis_id));
-                    getVaccineDatabyDistr(dis_id,date,vacBrand,agel,arrayList);
-                }
-                else if(pin.isChecked() && !vacBrand.isEmpty() && !date.isEmpty() && !agel.isEmpty())
-                {
+                    getVaccineDatabyDistr(dis_id, date, vacBrand, agel, arrayList);
+                } else if (pin.isChecked() && !vacBrand.isEmpty() && !date.isEmpty() && !agel.isEmpty()) {
                     String pincode = Edit_pin.getText().toString();
-                    if(!pincode.isEmpty())
-                    {
-                        getVaccineDatabyPin(pincode,date,vacBrand,agel,arrayList);
+                    if (!pincode.isEmpty()) {
+                        getVaccineDatabyPin(pincode, date, vacBrand, agel, arrayList);
                     }
+              }//else if(locat.isChecked() && !vacBrand.isEmpty() && !date.isEmpty() && !agel.isEmpty()){
+//                    if(lat_location==0.0f && long_location==0.0f){
+//                        Toast.makeText(SlotAvailaibility.this,"No Location",Toast.LENGTH_SHORT).show();
+//                    }
+//                    else{
+//                        getVaccineDatabyLatLong(lat_location,long_location,date, vacBrand, agel, arrayList);
+//                    }
+//                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Fill in the details", Toast.LENGTH_SHORT).show();
                 }
-                else
-                    {
-                        Toast.makeText(getApplicationContext(),"Fill in the details",Toast.LENGTH_SHORT).show();
-                    }
 
             }
+
+
         });
 
+//        get_location.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (ContextCompat.checkSelfPermission(
+//                        SlotAvailaibility.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//                    locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//                    if (!locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+//                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+//                    } else {
+//                        Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+//                        if (location!=null){
+//                            lat_location = (float) location.getLatitude();
+//                            long_location = (float) location.getLongitude();
+//                            DecimalFormat decimalFormat = new DecimalFormat("#.##");
+//                            lat_edit.setText(decimalFormat.format(lat_location));
+//                            long_edit.setText(decimalFormat.format(long_location));
+//                        }
+//                        else
+//                            Toast.makeText(SlotAvailaibility.this, "Unable to find Location", Toast.LENGTH_SHORT).show();
+//                    }
+//                } else if (ActivityCompat.shouldShowRequestPermissionRationale(SlotAvailaibility.this,
+//                        Manifest.permission.ACCESS_FINE_LOCATION)) {
+//                    new AlertDialog.Builder(SlotAvailaibility.this)
+//                            .setTitle("Location is Required")
+//                            .setMessage("If you want to check slots using Location then you have to provide access to Location Services")
+//                            .setPositiveButton("Ask for Permissions", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialogInterface, int i) {
+//                                    //Prompt the user once explanation has been shown
+//                                    ActivityCompat.requestPermissions(SlotAvailaibility.this,
+//                                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+//                                            MY_PERMISSIONS_REQUEST_LOCATION);
+//                                }
+//                            })
+//                            .create()
+//                            .show();
+//
+//                } else {
+//                    // You can directly ask for the permission.
+//                    ActivityCompat.requestPermissions(SlotAvailaibility.this,
+//                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+//                            MY_PERMISSIONS_REQUEST_LOCATION);
+//                }
+//
+//            }
+//
+//        });
 
 
     }
+
+
+//    private void getVaccineDatabyLatLong(float lat_location, float long_location, String date, String vacBrand, String agel, ArrayList<Doses> arrayList) {
+//        RequestQueue queue = Volley.newRequestQueue(SlotAvailaibility.this);
+//        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://cdn-api.co-vin.in/api/v2/appointment/centers/public/findByLatLong?lat="+lat_location+"&long="+long_location, new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String response) {
+//
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//
+//            }
+//        });
+//    }
+
 
     private void getVaccineDatabyPin(String pincode, String date, String vacBrand, String agel, ArrayList<Doses> arrayList) {
         RequestQueue queue = Volley.newRequestQueue(SlotAvailaibility.this);
@@ -381,10 +481,14 @@ public class SlotAvailaibility extends AppCompatActivity {
         Edit_pin = findViewById(R.id.PincodeEdit);
         layout = findViewById(R.id.spinnerLayout);
         locat = findViewById(R.id.radiobtn_location);
+//        lat_edit = findViewById(R.id.LocationEdit_Lat);
+//        long_edit = findViewById(R.id.LocationEdit_Long);
+//        t111 = findViewById(R.id.or);
 
         s1 = findViewById(R.id.spinner1);
         s2 = findViewById(R.id.spinner2);
         submit = findViewById(R.id.getslot_data);
+//        get_location = findViewById(R.id.get_Location);
         cal1 = findViewById(R.id.calender);
         date_edit = findViewById(R.id.date);
         rv2 = findViewById(R.id.recyclerView2);

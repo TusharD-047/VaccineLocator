@@ -93,6 +93,45 @@
                     android:hint="Type Pincode here">
 
                 </EditText>
+                <EditText
+                    android:id="@+id/LocationEdit_Lat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="16dp"
+                    android:visibility="gone"
+                    android:hint="Enter Latitude">
+                </EditText>
+                <EditText
+                    android:id="@+id/LocationEdit_Long"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="16dp"
+                    android:visibility="gone"
+                    android:hint="Enter Longitude">
+                </EditText>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="OR"
+                    android:id="@+id/or"
+                    android:textColor="@color/black"
+                    android:layout_margin="16dp"
+                    android:textSize="18sp"
+                    android:textAlignment="center"
+                    android:visibility="gone">
+                </TextView>
+                <Button
+                    android:id="@+id/get_Location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:visibility="gone"
+                    android:text="Get Location">
+                </Button>
                 <LinearLayout
                     android:layout_marginTop="16dp"
                     android:padding="8dp"

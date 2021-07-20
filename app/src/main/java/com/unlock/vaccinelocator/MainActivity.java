@@ -100,11 +100,12 @@ public class MainActivity extends AppCompatActivity {
         });
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        if(preferences.contains("DistrictNumber") && preferences.contains("StateCodeName") && preferences.contains("Home")) {
+        if(preferences.contains("Home")) {
             if(preferences.getString("Home", "any").equals("District")){
                 getHomePageCases(preferences.getString("DistrictNumber", "0"), preferences.getString("StateCodeName", "TT"));
             }
             else{
+                Log.e("check123","123");
                 getStateCases(preferences.getString("StateCodeName", "0"), preferences.getString("StateActualName", "0"));
             }
         }
@@ -123,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     JSONObject jsonObject1 = jsonObject.getJSONObject(stateCodeName).getJSONObject("dates");
+                    Log.e("state",String.valueOf(jsonObject1));
                     Calendar c1 = Calendar.getInstance();
                     Calendar c2 = Calendar.getInstance();
                     c2.add(Calendar.DATE, -1);
