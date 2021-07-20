@@ -231,7 +231,7 @@
                         android:button="@color/white"
                         android:textAlignment="center"
                         android:background="@drawable/radiobuttonvaccine_selector"
-                        android:text="Sputnik-V">
+                        android:text="Sputnik V">
 
                     </RadioButton>
                 </RadioGroup>

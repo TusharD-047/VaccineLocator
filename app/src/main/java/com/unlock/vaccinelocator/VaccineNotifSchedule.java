@@ -30,6 +30,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.unlock.vaccinelocator.Adapters.SlotAdapter;
 import com.unlock.vaccinelocator.Models.District;
 import com.unlock.vaccinelocator.Models.Doses;
@@ -54,10 +56,12 @@ public class VaccineNotifSchedule extends AppCompatActivity {
     private RadioButton distr,pin,locat;
     private EditText date,pincode;
     private Spinner s2,s1;
+    private String state,district;
     private ProgressDialog progress;
     private ArrayList<District> districts;
     private ImageView cal;
     private NotificationManagerCompat notificationManagerCompat;
+    long count=0;
     Calendar calendar = Calendar.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,6 +142,7 @@ public class VaccineNotifSchedule extends AppCompatActivity {
                     progress.show();
                     getdata(states[position], districts);
                     s2.setEnabled(true);
+                    state = states[position];
                 }
 
             }
@@ -197,7 +202,7 @@ public class VaccineNotifSchedule extends AppCompatActivity {
                 RadioButton age = (RadioButton) findViewById(radioGroup2.getCheckedRadioButtonId());
                 String mpincode = pincode.getText().toString();
                 String mdate = date.getText().toString();
-                String mvaccine = vaccine.getText().toString();
+                String mvaccine = vaccine.getText().toString().toUpperCase();
                 String mage = age.getText().toString();
                 if( !mdate.equals("") && !mvaccine.equals("") && !mage.equals("") && ((s1.getSelectedItemPosition()!=0) || !mpincode.equals("") ) )
                 {
@@ -213,26 +218,43 @@ public class VaccineNotifSchedule extends AppCompatActivity {
                     Intent intent = new Intent(VaccineNotifSchedule.this, BackgroundService.class);
                     intent.putExtra("difference",diff);
                     intent.putExtra("submittedTime",submittedtime);
+                    intent.putExtra("vaccine",mvaccine);
+                    intent.putExtra("age",mage);
+                    intent.putExtra("date",mdate);
+
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users")
+                            .child("yL5ZsftdURgfvEZbPK35d7B5aUb2")
+                            .child("AlertsList")
+                            .child("Alert"+(count+1));
                     if(pin.isChecked())
                     {
                         intent.putExtra("pincode",mpincode);
+                        reference.child("Date").setValue(submittedDate.toString());
+                        reference.child("VaccineName").setValue(mvaccine);
+                        reference.child("Pincode").setValue(mpincode);
+                        reference.child("MinAge").setValue(mage);
+                        Log.e("tag",pin+"");
                     }
                     else if(distr.isChecked())
                     {
                         int distr_id = districts.get(s2.getSelectedItemPosition()).getDis_id();
                         intent.putExtra("distr_id",distr_id);
+                        reference.child("Date").setValue(submittedDate.toString());
+                        reference.child("VaccineName").setValue(mvaccine);
+                        reference.child("MinAge").setValue(mage);
+                        reference.child("State").setValue(state);
+                        reference.child("District").setValue(districts.get(s2.getSelectedItemPosition()).getDis_name());
+
                     }
-                    intent.putExtra("vaccine",mvaccine);
-                    intent.putExtra("age",mage);
-                    intent.putExtra("date",mdate);
+
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         startService(intent);
                     }
                 }
                 else
-                    {
+                {
                         Toast.makeText(getApplicationContext(),"Fill the details", Toast.LENGTH_SHORT).show();
-                    }
+                }
             }
         });
         stop.setOnClickListener(new View.OnClickListener() {
@@ -297,6 +319,8 @@ public class VaccineNotifSchedule extends AppCompatActivity {
         layout = findViewById(R.id.spinnerLayout);
         s1 = findViewById(R.id.spinner1);
         s2 = findViewById(R.id.spinner2);
+        count = getIntent().getLongExtra("count",0);
+
     }
 
     private void updateLabel() {
