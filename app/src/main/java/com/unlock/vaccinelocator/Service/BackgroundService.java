@@ -6,6 +6,8 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
@@ -23,6 +25,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.unlock.vaccinelocator.MainActivity;
 import com.unlock.vaccinelocator.R;
+import com.unlock.vaccinelocator.SlotAvailaibility;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -93,8 +96,8 @@ public class BackgroundService extends Service {
                         String url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id="+distr_id+"&date="+date;
                         sendApiRequest(age,vaccine,url);
                     }
-                    handler.postDelayed(this::run,1000*60*60);
-                    Toast.makeText(BackgroundService.this,"Request has been sent and will sent again after 1 hour",Toast.LENGTH_SHORT).show();
+                    handler.postDelayed(this::run,1000*60*30);
+                    Toast.makeText(BackgroundService.this,"Request has been sent and will sent again after 30 min",Toast.LENGTH_SHORT).show();
                 }
                 else if(diff>=0 && diff<=47)
                 {
@@ -185,8 +188,8 @@ public class BackgroundService extends Service {
                     }
                     else
                         {
-                            String msg = "Slots are Not Availaible of "+vaccine+" for age group "+age;
-                            String title = "Vaccine Slot Unavailaible";
+                            String msg = "Oops!! Unavailaible slots for "+vaccine+" for age group "+age;
+                            String title = "Unavailaible slots!!";
                             SendNotif(msg,title);
                         }
                 } catch (JSONException e) {
@@ -205,10 +208,10 @@ public class BackgroundService extends Service {
     }
 
     private void SendNotif(String msg,String title) {
-        Intent intent = new Intent(this,MainActivity.class);
+        Intent intent = new Intent(this, SlotAvailaibility.class);
         PendingIntent contentIntent = PendingIntent.getActivity(this,0,intent,0);
         Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
-        Notification notification = new NotificationCompat.Builder(this,CHANNEL_ID)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_baseline_add_alert_24)
                 .setContentTitle(title)
                 .setContentText(msg)
@@ -217,9 +220,9 @@ public class BackgroundService extends Service {
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_EVENT)
                 .setContentIntent(contentIntent)
-                .setAutoCancel(true)
-                .build();
-        notificationManagerCompat.notify(1,notification);
+                .setOngoing(true)
+                .setAutoCancel(true);
+        notificationManagerCompat.notify(1,builder.build());
     }
 
     @Override

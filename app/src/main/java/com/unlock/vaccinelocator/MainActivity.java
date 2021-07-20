@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         c3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,VaccineNotifSchedule.class));
+                startActivity(new Intent(MainActivity.this,VaccineScheduleList.class));
             }
         });
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);

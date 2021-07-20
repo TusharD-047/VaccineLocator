@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="8dp"
+    app:cardBackgroundColor="@color/black"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_margin="1dp"
+        android:padding="4dp"
+        android:background="@color/white"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="22sp"
+            android:textColor="@android:color/holo_red_dark"
+            android:textStyle="bold"
+            android:layout_marginStart="8dp"
+            android:text="Alert 1 !"
+            android:drawableLeft="@drawable/ic_baseline_circle_notifications_24"
+            android:drawablePadding="8dp"
+            android:layout_alignParentStart="true">
+
+        </TextView>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_delete_24"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="8dp"
+            android:layout_above="@+id/divider">
+
+        </ImageView>
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"
+            android:layout_margin="8dp"
+            android:layout_below="@+id/tv1">
+
+        </View>
+        <TextView
+            android:id="@+id/vac_age_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/date"
+            android:layout_alignParentStart="true"
+            android:textSize="22sp"
+            android:layout_below="@+id/divider"
+            android:text="Covaxin , 18-44 age"
+            android:layout_margin="8dp">
+
+        </TextView>
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/divider"
+            android:textSize="18sp"
+            android:text="18/07/2021"
+            android:layout_alignParentRight="true"
+            android:layout_margin="8dp">
+
+        </TextView>
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="22sp"
+            android:text="Moradabad, Uttar Pradesh "
+            android:layout_below="@+id/vac_age_detail"
+            android:layout_marginStart="8dp">
+
+        </TextView>
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="16dp"
+            android:layout_toLeftOf="@+id/search_icon"
+            android:textSize="18sp"
+            android:text="Vaccine slots are not availaible\nWe are still searching... ->"
+            android:layout_below="@+id/address"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp">
+
+        </TextView>
+        <ImageView
+            android:id="@+id/search_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/address"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_baseline_search_24"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp">
+
+        </ImageView>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

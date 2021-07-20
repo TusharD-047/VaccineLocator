@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "40981356637",
+    "firebase_url": "https://fire-app-2-4e890.firebaseio.com",
+    "project_id": "fire-app-2-4e890",
+    "storage_bucket": "fire-app-2-4e890.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:40981356637:android:30523fce6822330f42adb4",
+        "android_client_info": {
+          "package_name": "com.unlock.vaccinelocator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "40981356637-gk8jttkh3c67fld305tq3651il0bt4ju.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaDtDpLMo_HmINWD7LDDibWMU_Q0rahd8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "40981356637-gk8jttkh3c67fld305tq3651il0bt4ju.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
