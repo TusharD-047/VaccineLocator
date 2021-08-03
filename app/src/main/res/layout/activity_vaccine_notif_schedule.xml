@@ -66,21 +66,11 @@
                         android:layout_height="wrap_content"
                         android:button="@color/white"
                         android:textAlignment="center"
-                        android:background="@drawable/radiobuttonmid_selector"
+                        android:background="@drawable/radiobuttonright_selector"
                         android:text="Pincode">
 
                     </RadioButton>
-                    <RadioButton
-                        android:id="@+id/radiobtn_location"
-                        android:layout_weight="1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:button="@color/white"
-                        android:textAlignment="center"
-                        android:background="@drawable/radiobuttonright_selector"
-                        android:text="Location">
 
-                    </RadioButton>
                 </RadioGroup>
 
                 <EditText
@@ -289,12 +279,12 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:text="Schedule Vaccine Notification"/>
-        <Button
-            android:id="@+id/stop"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:text="Cancel Schedule"/>
+<!--        <Button-->
+<!--            android:id="@+id/stop"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginLeft="16dp"-->
+<!--            android:layout_marginRight="16dp"-->
+<!--            android:text="Cancel Schedule"/>-->
     </LinearLayout>
 </ScrollView>

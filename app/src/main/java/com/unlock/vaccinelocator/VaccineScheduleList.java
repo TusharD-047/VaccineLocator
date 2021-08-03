@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,6 +34,7 @@ public class VaccineScheduleList extends AppCompatActivity {
     private ArrayList<AlertList> list;
     private FloatingActionButton addAlert;
     TextView tv;
+    ProgressDialog pd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +42,10 @@ public class VaccineScheduleList extends AppCompatActivity {
         rv =  findViewById(R.id.schedulelist_rv);
         addAlert = findViewById(R.id.add_alert);
         tv = findViewById(R.id.text_schedule);
+        pd = new ProgressDialog(this);
+        pd.setMessage("wait");
+        pd.show();
+        pd.setCancelable(false);
 
 
         list = new ArrayList<>();
@@ -47,7 +54,7 @@ public class VaccineScheduleList extends AppCompatActivity {
         rv.setAdapter(adapter);
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users")
-                .child("yL5ZsftdURgfvEZbPK35d7B5aUb2")
+                .child(FirebaseAuth.getInstance().getUid())
                 .child("AlertsList");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -79,8 +86,13 @@ public class VaccineScheduleList extends AppCompatActivity {
                         list.add(new AlertList(vacBrand,date,minAge,pincode,distr,state));
                     }
                     adapter.notifyDataSetChanged();
+                    pd.dismiss();
 
                 }
+                else
+                    {
+                        pd.dismiss();
+                    }
             }
 
             @Override

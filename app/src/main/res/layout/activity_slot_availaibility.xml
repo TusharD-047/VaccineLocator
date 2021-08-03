@@ -65,21 +65,11 @@
                         android:layout_height="wrap_content"
                         android:button="@color/white"
                         android:textAlignment="center"
-                        android:background="@drawable/radiobuttonmid_selector"
+                        android:background="@drawable/radiobuttonright_selector"
                         android:text="Pincode">
 
                     </RadioButton>
-                    <RadioButton
-                        android:id="@+id/radiobtn_location"
-                        android:layout_weight="1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:button="@color/white"
-                        android:textAlignment="center"
-                        android:background="@drawable/radiobuttonright_selector"
-                        android:text="Location">
 
-                    </RadioButton>
                 </RadioGroup>
 
                 <EditText
